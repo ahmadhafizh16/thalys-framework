@@ -1,0 +1,12 @@
+node_modules/
+dist/
+drizzle/
+.env
+*.log
+bun.lockb
+ELYSIA_PORTO_GUIDELINES.md                                                                                                                                                                                              
+CLAUDE.md                                                                                                                                                                                                               
+engineeringlog/
+.kiro/                                                                                                                                                                                                                
+.vscode/
+PRDs/
