@@ -1,0 +1,13 @@
+import { Create{{EntityName}}Action } from "@containers/{{Container}}/Actions/Create{{EntityName}}Action";
+import type { Create{{EntityName}}DTO } from "@containers/{{Container}}/Requests/{{schemaFile}}";
+import { {{TransformerName}} } from "@containers/{{Container}}/Transformers/{{TransformerName}}";
+import type { Container } from "@ship/Container/Container";
+import { wrapResponse } from "@ship/Http/MainController";
+
+const transformer = new {{TransformerName}}();
+
+export async function create{{EntityName}}(body: Create{{EntityName}}DTO, container: Container) {
+	const action = container.make(Create{{EntityName}}Action);
+	const created = await action.execute(body);
+	return wrapResponse(transformer.transform(created));
+}

@@ -1,0 +1,24 @@
+import type { AppDB } from "@ship/database/connection";
+import { BaseAction } from "@ship/Actions/BaseAction";
+import type { {{RepositoryName}} } from "@containers/{{Container}}/Models/{{RepositoryName}}";
+import { {{tableName}} } from "@containers/{{Container}}/Models/{{schemaFile}}";
+import { NotFoundError } from "@ship/Exceptions/AppError";
+import { eq } from "drizzle-orm";
+
+export class Delete{{EntityName}}Action extends BaseAction {
+	constructor(
+		db: AppDB,
+		private readonly {{lowerName}}Repo: {{RepositoryName}},
+	) {
+		super(db);
+	}
+
+	async execute(id: string): Promise<void> {
+		await this.db.transaction(async (tx) => {
+			const txRepo = this.{{lowerName}}Repo.withTransaction(tx);
+			const existing = await txRepo.findById(id);
+			if (!existing) throw new NotFoundError("{{EntityName}}");
+			await txRepo.delete(eq({{tableName}}.id, id));
+		});
+	}
+}

@@ -1,0 +1,16 @@
+import { {{RepositoryName}} } from "@containers/{{Container}}/Models/{{RepositoryName}}";
+import { {{TransformerName}} } from "@containers/{{Container}}/Transformers/{{TransformerName}}";
+import type { Container } from "@ship/Container/Container";
+import { NotFoundError } from "@ship/Exceptions/AppError";
+import { BaseRequest } from "@ship/Http/BaseRequest";
+import { wrapResponse } from "@ship/Http/MainController";
+
+const transformer = new {{TransformerName}}();
+
+export async function get{{EntityName}}(params: { id: string }, container: Container) {
+	const id = BaseRequest.validateId(params.id);
+	const repo = container.make({{RepositoryName}});
+	const entity = await repo.findById(id);
+	if (!entity) throw new NotFoundError("{{EntityName}}");
+	return wrapResponse(transformer.transform(entity));
+}

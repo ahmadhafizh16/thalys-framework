@@ -1,0 +1,8 @@
+import type { Create{{EntityName}}DTO } from "@containers/{{Container}}/Requests/{{schemaFile}}";
+import type { Container } from "@ship/Container/Container";
+import { wrapResponse } from "@ship/Http/MainController";
+
+export async function {{lowerName}}{{EntityName}}(input: Create{{EntityName}}DTO, container: Container) {
+	// TODO: implement — call Actions, transform result, return wrapResponse
+	return wrapResponse({ success: true });
+}

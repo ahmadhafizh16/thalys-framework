@@ -1,0 +1,36 @@
+import type { AppDB } from "@ship/database/connection";
+import { BaseAction } from "@ship/Actions/BaseAction";
+import type { {{RepositoryName}} } from "@containers/{{Container}}/Models/{{RepositoryName}}";
+import { {{tableName}} } from "@containers/{{Container}}/Models/{{schemaFile}}";
+import type { Raw{{EntityName}} } from "@containers/{{Container}}/Models/{{schemaFile}}";
+import { NotFoundError } from "@ship/Exceptions/AppError";
+import { eq } from "drizzle-orm";
+
+export interface Update{{EntityName}}Input {
+	id: string;
+	name?: string;
+}
+
+export class Update{{EntityName}}Action extends BaseAction {
+	constructor(
+		db: AppDB,
+		private readonly {{lowerName}}Repo: {{RepositoryName}},
+	) {
+		super(db);
+	}
+
+	async execute(input: Update{{EntityName}}Input): Promise<Raw{{EntityName}}> {
+		return await this.db.transaction(async (tx) => {
+			const txRepo = this.{{lowerName}}Repo.withTransaction(tx);
+			const existing = await txRepo.findById(input.id);
+			if (!existing) throw new NotFoundError("{{EntityName}}");
+
+			const updates: Partial<typeof {{tableName}}.$inferInsert> = {};
+			if (input.name !== undefined) updates.name = input.name;
+
+			const updated = await txRepo.update(eq({{tableName}}.id, input.id), updates);
+			if (!updated) throw new NotFoundError("{{EntityName}}");
+			return updated;
+		});
+	}
+}

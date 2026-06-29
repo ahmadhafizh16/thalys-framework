@@ -6,7 +6,7 @@ export const CreateUserRequest = t.Object({
 	phone: t.Optional(t.String()),
 	profilePic: t.Optional(t.String()),
 	password: t.String({ minLength: 8 }),
-	roleId: t.Integer(),
+	roleId: t.String({ format: "uuid" }),
 });
 
 export type CreateUserDTO = Static<typeof CreateUserRequest>;

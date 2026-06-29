@@ -1,0 +1,3 @@
+import { routeGroup } from "@ship/Http/routeGroup";
+
+export const {{lowerName}}RoutesV1 = routeGroup("/v1/{{pluralLower}}");

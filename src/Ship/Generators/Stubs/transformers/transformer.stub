@@ -1,0 +1,18 @@
+import type { Raw{{EntityName}} } from "@containers/{{Container}}/Models/{{schemaFile}}";
+import { BaseTransformer } from "@ship/Transformers/BaseTransformer";
+
+export interface {{OutputName}} {
+	id: string;
+	name: string;
+	createdOn: string;
+}
+
+export class {{TransformerName}} extends BaseTransformer<Raw{{EntityName}}, {{OutputName}}> {
+	transform(entity: Raw{{EntityName}}): {{OutputName}} {
+		return {
+			id: entity.id,
+			name: entity.name,
+			createdOn: entity.createdAt.toISOString(),
+		};
+	}
+}

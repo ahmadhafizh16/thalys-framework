@@ -1,0 +1,6 @@
+import { Elysia } from "elysia";
+
+export const {{middlewareName}} = new Elysia({ name: "{{kebabName}}" })
+	.onBeforeHandle(async ({ set }) => {
+		// TODO: implement middleware logic
+	});

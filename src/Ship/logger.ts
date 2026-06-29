@@ -29,3 +29,16 @@ export const logger: Logger = pino({
 });
 
 export type AppLogger = Logger;
+
+export const closeLogger = async (appLogger: AppLogger): Promise<void> => {
+	await new Promise<void>((resolve, reject) => {
+		appLogger.flush((error) => {
+			if (error) {
+				reject(error);
+				return;
+			}
+
+			resolve();
+		});
+	});
+};

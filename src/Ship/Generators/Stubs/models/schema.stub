@@ -1,0 +1,14 @@
+import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { uuidv7 } from "uuidv7";
+
+export const {{tableName}} = pgTable("{{dbTableName}}", {
+	id: text("id")
+		.primaryKey()
+		.$defaultFn(() => uuidv7()),
+	name: text("name").notNull(),
+	createdAt: timestamp("created_at").defaultNow().notNull(),
+	updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export type Raw{{EntityName}} = typeof {{tableName}}.$inferSelect;
+export type Insert{{EntityName}} = typeof {{tableName}}.$inferInsert;

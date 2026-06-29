@@ -1,0 +1,41 @@
+import { create{{EntityName}} } from "@containers/{{Container}}/UI/API/Controllers/create{{EntityName}}";
+import { delete{{EntityName}} } from "@containers/{{Container}}/UI/API/Controllers/delete{{EntityName}}";
+import { get{{EntityName}} } from "@containers/{{Container}}/UI/API/Controllers/get{{EntityName}}";
+import { list{{EntityName}}s } from "@containers/{{Container}}/UI/API/Controllers/list{{EntityName}}s";
+import { update{{EntityName}} } from "@containers/{{Container}}/UI/API/Controllers/update{{EntityName}}";
+import { Update{{EntityName}}Request } from "@containers/{{Container}}/Requests/{{schemaFile}}";
+import { Create{{EntityName}}Request } from "@containers/{{Container}}/Requests/{{schemaFile}}";
+import type { Container } from "@ship/Container/Container";
+import { can } from "@ship/Http/canMiddleware";
+import { routeGroup } from "@ship/Http/routeGroup";
+
+export const {{lowerName}}RoutesV1 = routeGroup("/v1/{{pluralLower}}")
+	.post(
+		"/",
+		async ({ container, body, set }) => {
+			set.status = 201;
+			return create{{EntityName}}(body, container as Container);
+		},
+		{ body: Create{{EntityName}}Request },
+	)
+	.get(
+		"/",
+		async ({ container, query }) => list{{EntityName}}s(query, container as Container),
+		{ beforeHandle: [can("{{lowerName}}", "read")] },
+	)
+	.get(
+		"/:id",
+		async ({ container, params }) => get{{EntityName}}(params, container as Container),
+		{ beforeHandle: [can("{{lowerName}}", "read")] },
+	)
+	.patch(
+		"/:id",
+		async ({ container, params, body }) =>
+			update{{EntityName}}(params, body, container as Container),
+		{ body: Update{{EntityName}}Request, beforeHandle: [can("{{lowerName}}", "update")] },
+	)
+	.delete(
+		"/:id",
+		async ({ container, params }) => delete{{EntityName}}(params, container as Container),
+		{ beforeHandle: [can("{{lowerName}}", "delete")] },
+	);

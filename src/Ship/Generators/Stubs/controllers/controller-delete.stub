@@ -1,0 +1,11 @@
+import { Delete{{EntityName}}Action } from "@containers/{{Container}}/Actions/Delete{{EntityName}}Action";
+import type { Container } from "@ship/Container/Container";
+import { BaseRequest } from "@ship/Http/BaseRequest";
+import { wrapResponse } from "@ship/Http/MainController";
+
+export async function delete{{EntityName}}(params: { id: string }, container: Container) {
+	const id = BaseRequest.validateId(params.id);
+	const action = container.make(Delete{{EntityName}}Action);
+	await action.execute(id);
+	return wrapResponse({ success: true });
+}

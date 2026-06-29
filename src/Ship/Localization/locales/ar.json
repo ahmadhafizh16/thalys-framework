@@ -1,0 +1,21 @@
+{
+	"errors": {
+		"NOT_FOUND": "لا يمكن العثور على {resource}.",
+		"CONFLICT": "حدث تعارض: {detail}.",
+		"INVALID_REQUEST": "طلب غير صالح: {detail}.",
+		"UNAUTHORIZED": "المصادقة مطلوبة.",
+		"FORBIDDEN": "ليس لديك صلاحية لتنفيذ هذا الإجراء.",
+		"RATE_LIMIT_EXCEEDED": "طلبات كثيرة جداً. يرجى المحاولة مرة أخرى لاحقاً.",
+		"SCHEMA_VALIDATION_FAILED": "لم يتطابق جسم الطلب مع المخطط المتوقع.",
+		"UNHANDLED_INTERNAL_ERROR": "حدث خطأ داخلي في الخادم.",
+		"EMAIL_ALREADY_EXISTS": "يوجد حساب بهذا البريد الإلكتروني بالفعل.",
+		"INVALID_CREDENTIALS": "بيانات الاعتماد المقدمة غير صحيحة.",
+		"INVALID_ID_FORMAT": "تنسيق غير صالح لـ '{field}'."
+	},
+	"success": {
+		"USER_CREATED": "تم إنشاء المستخدم بنجاح.",
+		"LOGIN_SUCCESSFUL": "تم تسجيل الدخول بنجاح.",
+		"LOGOUT_SUCCESSFUL": "تم تسجيل الخروج بنجاح.",
+		"REGISTRATION_SUCCESSFUL": "تم إنشاء الحساب بنجاح."
+	}
+}

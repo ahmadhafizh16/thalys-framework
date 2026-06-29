@@ -1,0 +1,21 @@
+{
+	"errors": {
+		"NOT_FOUND": "{resource} could not be located.",
+		"CONFLICT": "A conflict occurred: {detail}.",
+		"INVALID_REQUEST": "Invalid request: {detail}.",
+		"UNAUTHORIZED": "Authentication required.",
+		"FORBIDDEN": "You do not have permission to perform this action.",
+		"RATE_LIMIT_EXCEEDED": "Too many requests. Please try again later.",
+		"SCHEMA_VALIDATION_FAILED": "The request body did not match the expected schema.",
+		"UNHANDLED_INTERNAL_ERROR": "A fatal server exception occurred.",
+		"EMAIL_ALREADY_EXISTS": "An account with this email already exists.",
+		"INVALID_CREDENTIALS": "The provided credentials are incorrect.",
+		"INVALID_ID_FORMAT": "Invalid format for '{field}'."
+	},
+	"success": {
+		"USER_CREATED": "User created successfully.",
+		"LOGIN_SUCCESSFUL": "Login successful.",
+		"LOGOUT_SUCCESSFUL": "Logged out successfully.",
+		"REGISTRATION_SUCCESSFUL": "Account created successfully."
+	}
+}

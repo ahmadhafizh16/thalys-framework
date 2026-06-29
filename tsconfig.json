@@ -1,31 +1,31 @@
 {
-  "compilerOptions": {
-    "lib": ["ESNext"],
-    "module": "ESNext",
-    "target": "ESNext",
-    "moduleResolution": "bundler",
-    "moduleDetection": "force",
-    "baseUrl": ".",
-    "paths": {
-      "@ship/*": ["src/Ship/*"],
-      "@containers/*": ["src/Containers/*"]
-    },
-    "allowImportingTsExtensions": true,
-    "noEmit": true,
-    "composite": false,
-    "strict": true,
-    "downlevelIteration": true,
-    "skipLibCheck": true,
-    "jsx": "react-jsx",
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
-    "allowJs": true,
-    "types": ["bun-types"],
-    "esModuleInterop": true,
-    "noUncheckedIndexedAccess": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
-  },
-  "include": ["src/**/*.ts", "tests/**/*.ts", "command.ts", "drizzle.config.ts"]
+	"compilerOptions": {
+		"lib": ["ESNext"],
+		"module": "ESNext",
+		"target": "ESNext",
+		"moduleResolution": "bundler",
+		"moduleDetection": "force",
+		"baseUrl": ".",
+		"paths": {
+			"@ship/*": ["src/Ship/*"],
+			"@containers/*": ["src/Containers/*"]
+		},
+		"allowImportingTsExtensions": true,
+		"noEmit": true,
+		"composite": false,
+		"strict": true,
+		"downlevelIteration": true,
+		"skipLibCheck": true,
+		"jsx": "react-jsx",
+		"allowSyntheticDefaultImports": true,
+		"forceConsistentCasingInFileNames": true,
+		"allowJs": true,
+		"types": ["bun-types"],
+		"esModuleInterop": true,
+		"noUncheckedIndexedAccess": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noFallthroughCasesInSwitch": true
+	},
+	"include": ["src/**/*.ts", "tests/**/*.ts", "command.ts", "drizzle.config.ts"]
 }

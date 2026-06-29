@@ -3,6 +3,8 @@ export class AppError extends Error {
 		public statusCode: number,
 		public code: string,
 		message: string,
+		public messageKey?: string,
+		public messageParams?: Record<string, string>,
 	) {
 		super(message);
 		this.name = this.constructor.name;
@@ -12,7 +14,7 @@ export class AppError extends Error {
 
 export class NotFoundError extends AppError {
 	constructor(resource: string) {
-		super(404, "NOT_FOUND", `${resource} could not be located.`);
+		super(404, "NOT_FOUND", `${resource} could not be located.`, "errors.NOT_FOUND", { resource });
 	}
 }
 

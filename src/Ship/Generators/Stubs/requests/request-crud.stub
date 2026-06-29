@@ -1,0 +1,13 @@
+import { type Static, t } from "elysia";
+
+export const Create{{EntityName}}Request = t.Object({
+	name: t.String({ minLength: 2 }),
+});
+
+export type Create{{EntityName}}DTO = Static<typeof Create{{EntityName}}Request>;
+
+export const Update{{EntityName}}Request = t.Object({
+	name: t.Optional(t.String({ minLength: 2 })),
+});
+
+export type Update{{EntityName}}DTO = Static<typeof Update{{EntityName}}Request>;

@@ -1,0 +1,9 @@
+import type { AppClient } from "@ship/database/connection";
+import { BaseRepository } from "@ship/Repository/BaseRepository";
+import { {{tableName}} } from "@containers/{{Container}}/Models/{{schemaFile}}";
+
+export class {{RepositoryName}} extends BaseRepository<typeof {{tableName}}> {
+	constructor(db: AppClient) {
+		super(db, {{tableName}});
+	}
+}

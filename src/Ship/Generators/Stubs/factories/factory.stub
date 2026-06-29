@@ -1,0 +1,10 @@
+import { BaseFactory } from "@ship/Factory/BaseFactory";
+import type { Insert{{EntityName}} } from "@containers/{{Container}}/Models/{{schemaFile}}";
+
+export class {{FactoryName}} extends BaseFactory<Insert{{EntityName}}> {
+	definition(): Insert{{EntityName}} {
+		return {
+			// TODO: define default fake data using this.faker
+		};
+	}
+}

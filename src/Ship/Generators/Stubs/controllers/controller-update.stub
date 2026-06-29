@@ -1,0 +1,20 @@
+import { Update{{EntityName}}Action, type Update{{EntityName}}Input } from "@containers/{{Container}}/Actions/Update{{EntityName}}Action";
+import type { Update{{EntityName}}DTO } from "@containers/{{Container}}/Requests/{{schemaFile}}";
+import { {{TransformerName}} } from "@containers/{{Container}}/Transformers/{{TransformerName}}";
+import type { Container } from "@ship/Container/Container";
+import { BaseRequest } from "@ship/Http/BaseRequest";
+import { wrapResponse } from "@ship/Http/MainController";
+
+const transformer = new {{TransformerName}}();
+
+export async function update{{EntityName}}(
+	params: { id: string },
+	body: Update{{EntityName}}DTO,
+	container: Container,
+) {
+	const id = BaseRequest.validateId(params.id);
+	const input: Update{{EntityName}}Input = { id, ...body };
+	const action = container.make(Update{{EntityName}}Action);
+	const updated = await action.execute(input);
+	return wrapResponse(transformer.transform(updated));
+}

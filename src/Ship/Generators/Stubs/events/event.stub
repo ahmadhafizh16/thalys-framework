@@ -1,0 +1,5 @@
+import { BaseEvent } from "@ship/Events/BaseEvent";
+
+export class {{EventName}} extends BaseEvent {
+	readonly channel = "{{channel}}";
+}

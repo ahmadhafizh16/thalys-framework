@@ -1,0 +1,23 @@
+import type { AppDB } from "@ship/database/connection";
+import { BaseAction } from "@ship/Actions/BaseAction";
+import type { {{RepositoryName}} } from "@containers/{{Container}}/Models/{{RepositoryName}}";
+import type { Raw{{EntityName}} } from "@containers/{{Container}}/Models/{{schemaFile}}";
+import type { Create{{EntityName}}DTO } from "@containers/{{Container}}/Requests/{{schemaFile}}";
+
+export class Create{{EntityName}}Action extends BaseAction {
+	constructor(
+		db: AppDB,
+		private readonly {{lowerName}}Repo: {{RepositoryName}},
+	) {
+		super(db);
+	}
+
+	async execute(payload: Create{{EntityName}}DTO): Promise<Raw{{EntityName}}> {
+		return await this.db.transaction(async (tx) => {
+			const txRepo = this.{{lowerName}}Repo.withTransaction(tx);
+			return await txRepo.create({
+				name: payload.name,
+			});
+		});
+	}
+}

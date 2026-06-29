@@ -1,27 +1,33 @@
+import type { UserRepository } from "@containers/User/Models/UserRepository";
+import type { RawUserEntity } from "@containers/User/Models/user.schema";
+import type { CreateUserDTO } from "@containers/User/Requests/user.request";
+import type { HashPasswordTask } from "@containers/User/Tasks/HashPasswordTask";
+import { BaseAction } from "@ship/Actions/BaseAction";
 import type { AppDB } from "@ship/database/connection";
-import type { CreateUserDTO } from "../Requests/user.request";
-import { CheckEmailAvailabilityTask } from "../Tasks/CheckEmailAvailabilityTask";
-import { HashPasswordTask } from "../Tasks/HashPasswordTask";
-import { InsertUserTask } from "../Tasks/InsertUserTask";
-import { type SafeUserOutput, UserTransformer } from "../Transformers/UserTransformer";
 
-export class CreateUserAction {
-	static async execute(db: AppDB, payload: CreateUserDTO): Promise<SafeUserOutput> {
-		const passwordHash = await HashPasswordTask.run(payload.password);
+export class CreateUserAction extends BaseAction {
+	constructor(
+		db: AppDB,
+		private readonly userRepo: UserRepository,
+		private readonly hashPassword: HashPasswordTask,
+	) {
+		super(db);
+	}
 
-		// Atomic transaction: both DB tasks share `tx`; any failure rolls back fully.
-		const rawSavedUser = await db.transaction(async (tx) => {
-			await CheckEmailAvailabilityTask.run(tx, payload.email);
-			return await InsertUserTask.run(tx, {
+	async execute(payload: CreateUserDTO): Promise<RawUserEntity> {
+		const hashedPassword = await this.hashPassword.run(payload.password);
+
+		return await this.db.transaction(async (tx) => {
+			const txRepo = this.userRepo.withTransaction(tx);
+			await txRepo.assertEmailAvailable(payload.email);
+			return await txRepo.create({
 				name: payload.name,
 				email: payload.email,
-				phone: payload.phone,
-				profilePic: payload.profilePic,
-				roleId: payload.roleId,
-				passwordHash,
+				phone: payload.phone ?? null,
+				profilePic: payload.profilePic ?? null,
+				password: hashedPassword,
+				roleId: payload.roleId ?? null,
 			});
 		});
-
-		return UserTransformer.transform(rawSavedUser);
 	}
 }

@@ -1,0 +1,12 @@
+import type { AppClient } from "@ship/database/connection";
+import { BaseTask } from "@ship/Tasks/BaseTask";
+
+export class {{TaskName}} extends BaseTask {
+	constructor(dbClient: AppClient) {
+		super(dbClient);
+	}
+
+	async run(): Promise<void> {
+		// TODO: implement
+	}
+}

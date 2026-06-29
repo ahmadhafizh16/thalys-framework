@@ -1,0 +1,10 @@
+import type { BaseEvent } from "@ship/Events/BaseEvent";
+import type { EventListener } from "@ship/Events/EventDispatcher";
+
+export class {{ListenerName}} implements EventListener {
+	readonly channel = "{{channel}}";
+
+	async handle(_event: BaseEvent): Promise<void> {
+		// TODO: implement
+	}
+}

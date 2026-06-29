@@ -1,4 +1,5 @@
-import type { RawUserEntity } from "../Models/user.schema";
+import type { RawUserEntity } from "@containers/User/Models/user.schema";
+import { BaseTransformer } from "@ship/Transformers/BaseTransformer";
 
 export interface SafeUserOutput {
 	id: string;
@@ -6,14 +7,14 @@ export interface SafeUserOutput {
 	emailAddress: string;
 	phone: string | null;
 	profilePic: string | null;
-	roleId: number;
+	roleId: string | null;
 	registeredOn: string;
 }
 
-export class UserTransformer {
-	static transform(user: RawUserEntity): SafeUserOutput {
+export class UserTransformer extends BaseTransformer<RawUserEntity, SafeUserOutput> {
+	transform(user: RawUserEntity): SafeUserOutput {
 		return {
-			id: user.externalId,
+			id: user.id,
 			fullName: user.name,
 			emailAddress: user.email,
 			phone: user.phone,

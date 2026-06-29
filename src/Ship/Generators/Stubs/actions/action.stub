@@ -1,0 +1,12 @@
+import type { AppDB } from "@ship/database/connection";
+import { BaseAction } from "@ship/Actions/BaseAction";
+
+export class {{ActionName}} extends BaseAction {
+	constructor(db: AppDB) {
+		super(db);
+	}
+
+	async execute(): Promise<void> {
+		// TODO: implement
+	}
+}

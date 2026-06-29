@@ -1,0 +1,13 @@
+import { ConsoleCommand } from "@ship/Console/ConsoleCommand";
+import type { ConsoleContext } from "@ship/Console/ConsoleContext";
+
+type {{CommandName}}Input = Record<string, never>;
+
+export class {{CommandName}} extends ConsoleCommand<{{CommandName}}Input> {
+	readonly signature = "{{signature}}";
+	readonly description = "{{description}}";
+
+	async handle(_input: {{CommandName}}Input, context: ConsoleContext): Promise<void> {
+		// TODO: implement
+	}
+}

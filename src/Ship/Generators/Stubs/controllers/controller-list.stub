@@ -1,0 +1,20 @@
+import { {{RepositoryName}} } from "@containers/{{Container}}/Models/{{RepositoryName}}";
+import { List{{EntityName}}sRequest } from "@containers/{{Container}}/Requests/list-{{pluralLower}}.request";
+import { {{TransformerName}} } from "@containers/{{Container}}/Transformers/{{TransformerName}}";
+import type { Container } from "@ship/Container/Container";
+import { wrapPaginated } from "@ship/Http/MainController";
+
+const transformer = new {{TransformerName}}();
+
+export async function list{{EntityName}}s(
+	query: Record<string, string | undefined>,
+	container: Container,
+) {
+	const criteria = List{{EntityName}}sRequest.parse(query);
+	const repo = container.make({{RepositoryName}});
+	const result = await repo.paginate(criteria);
+	return wrapPaginated(
+		result.data.map((e) => transformer.transform(e)),
+		result.meta,
+	);
+}
