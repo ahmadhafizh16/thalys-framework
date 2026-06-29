@@ -23,7 +23,7 @@ Prefer aliases for cross-layer and cross-container imports. Same-container sibli
 ```txt
 src/
   Ship/
-    Console/          # Artisan-style CLI kernel/context/command contract
+    Console/          # CLI kernel with signature parsing
     Exceptions/       # AppError hierarchy
     database/         # Drizzle/Postgres AppDb connection
     logger.ts         # pino + pino-mongodb logger
@@ -45,7 +45,7 @@ src/
 
 `Ship` owns infrastructure. `Containers` own business behavior. A container may expose more than one UI adapter: HTTP APIs under `UI/API` and CLI commands under `UI/Command`.
 
-## 2. Request and command flow
+## 2b. Request and command flow
 
 HTTP flow:
 
@@ -73,7 +73,7 @@ Both are UI adapters. Neither API routes nor console commands should perform dat
 
 ### UI/Command
 
-- Console commands are class-based and live in the owning container, e.g. `src/Containers/Role/UI/Command/SeedRolesCommand.ts`.
+- Console commands are class-based and live in the owning container, e.g. `src/Containers/Auth/UI/Command/SeedRolesCommand.ts`.
 - Commands implement `ConsoleCommand` from `Ship/Console/ConsoleCommand.ts`.
 - Commands receive shared dependencies via `ConsoleContext` (`db`, `log`).
 - Commands call Actions, never Tasks directly.
@@ -94,15 +94,13 @@ Both are UI adapters. Neither API routes nor console commands should perform dat
 
 ### Transformers
 
-- Transformers explicitly define the client-facing response shape.
-- Internal integer IDs should not leak. Use `externalId` for API responses.
+- Transformers explicitly define the client-facing response shape. Internal columns never leak to the API response.
 
 ### Models
 
 - Postgres schemas live in `Models/*.schema.ts` and use Drizzle `pgTable`.
 - Drizzle-kit only scans `*.schema.ts`; non-Postgres models must not use that suffix.
-- Internal PK pattern: `id integer generatedAlwaysAsIdentity()`.
-- External ID pattern: `external_id text default gen_random_uuid() not null unique`.
+- Primary keys use app-side UUIDv7: `$defaultFn(() => uuidv7())`. Time-sortable, exists before INSERT (usable as FK in same transaction). Junction/internal tables may use integer PKs (never exposed).
 
 ## 4. Cross-container boundary (Bridge containers)
 
@@ -112,7 +110,7 @@ A container that needs another container's behavior imports from a **Bridge cont
 Containers/
   Auth/                  # producer
   User/                  # producer
-  AuthBridge/            # bridge: Ship/authMiddleware → Auth
+  AuthBridge/            # bridge: Ship/authContext → Auth
     DTOs/
       AuthBridgeDTO.ts   # SessionDTO (the data shape consumers need)
     Adapters/
@@ -143,7 +141,8 @@ Bad:
 
 ```ts
 import { LoginAction } from "@containers/Auth/Actions/LoginAction";
-await LoginAction.execute(db);
+const action = container.make(LoginAction);  // ← bypasses Bridge, couples to Auth internals
+await action.execute(...);
 ```
 
 ### Full example: Product ↔ Order via Bridge
@@ -253,8 +252,6 @@ container.bind(PlaceOrderAction, "db", "ProductOrderBridgePort", CreateOrderTask
 
 Logging is hit-and-run. Logging failures must not roll back application DB work.
 
-### Elysia setup
-
 `Ship/setup.ts` decorates API routes with:
 
 - `db`
@@ -265,7 +262,7 @@ Logging is hit-and-run. Logging failures must not roll back application DB work.
 
 The global error handler must use `{ as: "global" }`; otherwise Elysia keeps the hook local and route errors are not caught.
 
-## 6. Artisan-style console
+## 6. Console
 
 The root `command.ts` boots the Ship console kernel without starting the HTTP server.
 
@@ -292,10 +289,10 @@ Register commands explicitly in `Ship/Console/commands.ts`. Prefer explicit regi
 Use class commands + Actions + Tasks for seeders:
 
 ```txt
-Role/UI/Command/SeedRolesCommand.ts
-Role/Actions/SeedRolesAction.ts
-Role/Tasks/UpsertRoleTask.ts
-Role/Tasks/UpsertRolePermissionTask.ts
+Auth/UI/Command/SeedRolesCommand.ts
+Auth/Actions/ListRolesAction.ts
+Auth/Models/permission.schema.ts
+Auth/Models/role.schema.ts
 ```
 
 Use `@faker-js/faker` for fake data when adding user/product/order seeders. Keep deterministic seeds where test repeatability matters.
